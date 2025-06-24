@@ -1,0 +1,61 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    expose:
+      - 9000
+    volumes:
+      - .:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+        restart: true
+      redis:
+        condition: service_started
+    networks:
+      - laravel
+    env_file: ".env"
+  nginx:
+    image: nginx:latest
+    container_name: laravel_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/app
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+  postgres:
+    image: postgres:15.4
+    container_name: laravel_postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - laravel
+
+  redis:
+    image: redis:alpine
+    container_name: laravel_redis
+    command: redis-server --save "" --appendonly no
+    networks:
+      - laravel
+
+volumes:
+  pgdata:
+
+networks:
+  laravel:
+    driver: bridge
