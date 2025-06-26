@@ -27,17 +27,20 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.
      */
     public function show(Post $post)
     {
-        //
+        $related = Post::where('category_id', $post->category->id)
+            ->where('id', '<>', $post->id)
+            ->limit(3)
+            ->orderby('post_at', 'desc')
+            ->get();
+
+        return view('blog.blog-post', compact('post', 'related'));
     }
 
     /**

@@ -8,11 +8,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',  [PageController::class, 'index']);
 Route::get('/sobre', [PageController::class, 'about']);
+
+//blog routes
 Route::get('/blog', [PostController::class, 'index'])->name('post.index');
+Route::get('/blog/{post:uri}', [PostController::class, 'show'])->name('post.show');
+
 
 //Authentication
 Route::get('/entrar', [LoginControlller::class, 'index']);
 Route::get('/cadastrar', [RegisterController::class, 'index']);
 
-// Route::get('/post', [PostController::class, 'index'])->name('post.index');
 
+
+// Route::get('/post', [PostController::class, 'index'])->name('post.index');

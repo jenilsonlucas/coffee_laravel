@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
@@ -18,22 +19,22 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
-        $name = fake()->country();
+        $name = fake()->company();
         return [
             'user_id' => User::factory(),
             'category_id' => Category::factory(),
             'title' => $name,
-            'uri' => $name,
+            'uri' => Str::slug($name, '-'),
             'subtitle' => fake()->sentence(4),
             'content' => $this->generateHtmlContent(),
             'cover' => '/assets/images/capa_post.png',
             'post_at' => now(),
             'views' => rand(0, 999),
-            
+
         ];
     }
 
-    private function generateHtmlContent(): string 
+    private function generateHtmlContent(): string
     {
         $faker = $this->faker;
 
