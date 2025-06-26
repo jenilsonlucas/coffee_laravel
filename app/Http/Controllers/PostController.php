@@ -12,7 +12,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $blog = Post::orderby('post_at', 'desc')->paginate(6);
+        return view('page.blog', compact('blog'));
     }
 
     /**
@@ -28,7 +29,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
