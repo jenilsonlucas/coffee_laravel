@@ -87,9 +87,9 @@
 
             <article class="main_footer_content_item">
                 <h2>Contato:</h2>
-                <p class="icon-phone"><b>Telefone:</b><br> +55 55 5555.5555</p>
-                <p class="icon-envelope"><b>Email:</b><br> cafe@cafecontrol.com</p>
-                <p class="icon-map-marker"><b>Endereço:</b><br> Fpolis, SC/Brasil</p>
+                <p class="icon-phone"><b>Telefone:</b><br> +244 999 999 999</p>
+                <p class="icon-envelope"><b>Email:</b><br> jenilsonllucas@gmail.com</p>
+                <p class="icon-map-marker"><b>Endereço:</b><br> Angola, Luanda</p>
             </article>
 
             <article class="main_footer_content_item social">
