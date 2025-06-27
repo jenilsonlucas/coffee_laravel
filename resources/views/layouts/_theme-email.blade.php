@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title><?= $title; ?></title>
+    <title>@yield('title')</title>
     <style>
         body {
             -webkit-box-sizing: border-box;
@@ -45,14 +45,11 @@
     <tr>
         <td>
             <div class="content">
-                <?= $v->section("content"); ?>
-                <p>Atenciosamente, equipe <?= CONF_SITE_NAME; ?>.</p>
+                @yield('content')
+                <p>Atenciosamente, jenilson Lucas.</p>
             </div>
             <div class="footer">
-                <p><?= CONF_SITE_NAME; ?> - <?= CONF_SITE_TITLE; ?></p>
-                <p><?= CONF_SITE_ADDR_STREET; ?>
-                    , <?= CONF_SITE_ADDR_NUMBER; ?><?= (CONF_SITE_ADDR_COMPLEMENT ? ", " . CONF_SITE_ADDR_COMPLEMENT : ""); ?></p>
-                <p><?= CONF_SITE_ADDR_CITY; ?>/<?= CONF_SITE_ADDR_STATE; ?> - <?= CONF_SITE_ADDR_ZIPCODE; ?></p>
+              <span>Jenilson Lucas - Angola - Luanda, Projecto nova viada</span>
             </div>
         </td>
     </tr>

@@ -11,20 +11,44 @@
 
         <form class="auth_form" action="{{url('/cadastrar')}}" method="post" enctype="multipart/form-data">
             @csrf
-
+            @if(session('credentials'))
+            <div class="ajax_response">
+                <div class="message {{session('message-type')}} icon-warning">{{session('credentials')}}</div>
+            </div>
+            @endif
+            @error('first_name')
+            <div class="ajax_response">
+                <div class="message error icon-warning">{{$message}}</div>
+            </div>
+            @enderror
+            @error('last_name')
+            <div class="ajax_response">
+                <div class="message error icon-warning">{{$message}}</div>
+            </div>
+            @enderror
+            @error('email')
+            <div class="ajax_response">
+                <div class="message error icon-warning">{{$message}}</div>
+            </div>
+            @enderror
+            @error('password')
+            <div class="ajax_response">
+                <div class="message error icon-warning">{{$message}}</div>
+            </div>
+            @enderror
             <label>
                 <div><span class="icon-user">Nome:</span></div>
-                <input type="text" name="first_name" placeholder="Primeiro nome:" required/>
+                <input type="text" name="first_name" value="{{old('first_name')}}" placeholder="Primeiro nome:" required/>
             </label>
 
             <label>
                 <div><span class="icon-user-plus">Sobrenome:</span></div>
-                <input type="text" name="last_name" placeholder="Último nome:" required/>
+                <input type="text" name="last_name" value="{{old('last_name')}}" placeholder="Último nome:" required/>
             </label>
 
             <label>
                 <div><span class="icon-envelope">Email:</span></div>
-                <input type="email" name="email" placeholder="Informe seu e-mail:" required/>
+                <input type="email" name="email" value="{{old('email')}}" placeholder="Informe seu e-mail:" required/>
             </label>
 
             <label>

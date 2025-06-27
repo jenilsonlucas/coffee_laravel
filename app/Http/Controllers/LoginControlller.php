@@ -13,9 +13,13 @@ class LoginControlller extends Controller
      */
     public function index()
     {
+        if(Auth::check()) return redirect('/app');
         return view('auth.auth-login');
     }
 
+    /**
+     * Login a user in app
+     */
     public function login(Request $request):RedirectResponse
     {
         $credentias = $request->validate([
