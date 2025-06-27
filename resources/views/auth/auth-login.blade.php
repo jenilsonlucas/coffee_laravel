@@ -9,11 +9,26 @@
         </header>
 
         <form class="auth_form" action="{{url('/entrar')}}" method="post" enctype="multipart/form-data">
-            
+            @csrf
+            @if(session('credentials'))
+            <div class="ajax_response">
+                <div class="message {{session('message-type')}} icon-warning">{{session('credentials')}}</div>
+            </div>
+            @endif
+            @error('email')
+            <div class="ajax_response">
+                <div class="message error icon-warning">{{$message}}</div>
+            </div>
+            @enderror
+            @error('password')
+            <div class="ajax_response">
+                <div class="message error icon-warning">{{$message}}</div>
+            </div>
+            @enderror
             <label>
                 <div><span class="icon-envelope">Email:</span></div>
                 <input type="email" name="email" value="{{old('email')}}" placeholder="Informe seu e-mail:"
-                       required/>
+                    required />
             </label>
 
             <label>
@@ -21,11 +36,11 @@
                     <span class="icon-unlock-alt">Senha:</span>
                     <span><a title="Esqueceu a senha?" href="{{url('/recuperar')}}">Esqueceu a senha?</a></span>
                 </div>
-                <input type="password" name="password" placeholder="Informe sua senha:" required/>
+                <input type="password" name="password" placeholder="Informe sua senha:" required />
             </label>
 
             <label class="check">
-                <input type="checkbox" @checked(old('save')) name="save"/>
+                <input type="checkbox" @checked(old('save')) name="remember" />
                 <span>Lembrar dados?</span>
             </label>
 

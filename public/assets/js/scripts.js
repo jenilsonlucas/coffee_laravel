@@ -3,17 +3,20 @@ $(function () {
     $(".j_menu_mobile_open").click(function (e) {
         e.preventDefault();
 
-        $(".j_menu_mobile_tab").css("left", "auto").fadeIn(1).animate({"right": "0"}, 200);
+        $(".j_menu_mobile_tab")
+            .css("left", "auto")
+            .fadeIn(1)
+            .animate({ right: "0" }, 200);
     });
 
     // mobile menu close
     $(".j_menu_mobile_close").click(function (e) {
         e.preventDefault();
 
-        $(".j_menu_mobile_tab").animate({"left": "100%"}, 200, function () {
+        $(".j_menu_mobile_tab").animate({ left: "100%" }, 200, function () {
             $(".j_menu_mobile_tab").css({
-                "right": "auto",
-                "display": "none"
+                right: "auto",
+                display: "none",
             });
         });
     });
@@ -23,7 +26,7 @@ $(function () {
         e.preventDefault();
 
         var goto = $($(this).data("go")).offset().top;
-        $("html, body").animate({scrollTop: goto}, goto / 2, "easeOutBounce");
+        $("html, body").animate({ scrollTop: goto }, goto / 2, "easeOutBounce");
     });
 
     // modal open
@@ -52,8 +55,15 @@ $(function () {
     $(".j_collapse").click(function () {
         var collapse = $(this);
 
-        collapse.parents().find(".j_collapse_icon").removeClass("icon-minus").addClass("icon-plus");
-        collapse.find(".j_collapse_icon").removeClass("icon-plus").addClass("icon-minus");
+        collapse
+            .parents()
+            .find(".j_collapse_icon")
+            .removeClass("icon-minus")
+            .addClass("icon-plus");
+        collapse
+            .find(".j_collapse_icon")
+            .removeClass("icon-plus")
+            .addClass("icon-minus");
 
         if (collapse.find(".j_collapse_box").is(":visible")) {
             collapse.find(".j_collapse_box").slideUp(200);
@@ -63,46 +73,59 @@ $(function () {
         }
     });
 
-    //ajax form
-    $("form:not('.ajax_off')").submit(function (e) {
-        e.preventDefault();
-        var form = $(this);
-        var load = $(".ajax_load");
-        var flashClass = "ajax_response";
-        var flash = $("." + flashClass);
+//     //ajax form
+//     $("form:not('.ajax_off')").submit(function (e) {
+//         e.preventDefault();
+//         var form = $(this);
+//         var load = $(".ajax_load");
+//         var flashClass = "ajax_response";
+//         var flash = $("." + flashClass);
 
-        form.ajaxSubmit({
-            url: form.attr("action"),
-            type: "POST",
-            dataType: "json",
-            beforeSend: function () {
-                load.fadeIn(200).css("display", "flex");
-            },
-            success: function (response) {
-                //redirect
-                if (response.redirect) {
-                    window.location.href = response.redirect;
-                } else {
-                    load.fadeOut(200);
-                }
+//         form.ajaxSubmit({
+//             url: form.attr("action"),
+//             type: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//             },
+//             dataType: "json",
+//             beforeSend: function () {
+//                 load.fadeIn(200).css("display", "flex");
+//             },
+//             success: function (response) {
+//                 //redirect
+//                 if (response.redirect) {
+//                     window.location.href = response.redirect;
+//                 } else {
+//                     load.fadeOut(200);
+//                 }
 
-                //message
-                if (response.message) {
-                    if (flash.length) {
-                        flash.html(response.message).fadeIn(100).effect("bounce", 300);
-                    } else {
-                        form.prepend("<div class='" + flashClass + "'>" + response.message + "</div>")
-                            .find("." + flashClass).effect("bounce", 300);
-                    }
-                } else {
-                    flash.fadeOut(100);
-                }
-            },
-            complete: function () {
-                if (form.data("reset") === true) {
-                    form.trigger("reset");
-                }
-            }
-        });
-    });
+//                 //message
+//                 if (response.message) {
+//                     if (flash.length) {
+//                         flash
+//                             .html(response.message)
+//                             .fadeIn(100)
+//                             .effect("bounce", 300);
+//                     } else {
+//                         form.prepend(
+//                             "<div class='" +
+//                                 flashClass +
+//                                 "'>" +
+//                                 response.message +
+//                                 "</div>"
+//                         )
+//                             .find("." + flashClass)
+//                             .effect("bounce", 300);
+//                     }
+//                 } else {
+//                     flash.fadeOut(100);
+//                 }
+//             },
+//             complete: function () {
+//                 if (form.data("reset") === true) {
+//                     form.trigger("reset");
+//                 }
+//             },
+//         });
+//     });
 });

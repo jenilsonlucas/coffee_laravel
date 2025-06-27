@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ asset('shared/styles/styles.css') }}"/>
     <link rel="stylesheet" href="{{ asset('shared/styles/boot.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets/css/message.css') }}"/>
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
 </head>
 <body>

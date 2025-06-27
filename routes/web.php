@@ -16,6 +16,7 @@ Route::get('/blog/{post:uri}', [PostController::class, 'show'])->name('post.show
 
 //Authentication
 Route::get('/entrar', [LoginControlller::class, 'index']);
+Route::post('/entrar', [LoginControlller::class, 'login']);
 Route::get('/cadastrar', [RegisterController::class, 'index']);
 
 
