@@ -17,6 +17,26 @@ class PostController extends Controller
     }
 
     /**
+     * searching a post
+     */
+    public function postSearch(Request $request)
+    {
+        $search = $request->validate([
+            's' => "nullable"
+        ]);
+
+        if(empty($search)) return redirect('/blog');
+
+        $blog = Post::whereFullText('title', $search)
+        ->orWhereFullText('subtitle', $search)->paginate(6);
+        
+        $title = "PESQUISA POR:";
+        $search = $search['s'];
+
+        return view('page.blog', compact('blog', 'title', 'search'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

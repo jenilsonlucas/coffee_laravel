@@ -16,8 +16,10 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('category_id')->nullable()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('title', 255);
+            $table->fullText('title');
             $table->string('uri', 255);
-            $table->text('subtitle');
+            $table->string('subtitle', 255);
+            $table->fullText('subtitle');
             $table->text('content');
             $table->string('cover', 255);
             $table->integer('views', false, true)->default(0);

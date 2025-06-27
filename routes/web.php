@@ -13,6 +13,7 @@ Route::get('/sobre', [PageController::class, 'about']);
 
 //blog routes
 Route::get('/blog', [PostController::class, 'index'])->name('post.index');
+Route::post('/blog/buscar', [PostController::class, 'postSearch']);
 Route::get('/blog/{post:uri}', [PostController::class, 'show'])->name('post.show');
 
 
