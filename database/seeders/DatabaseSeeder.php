@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\App_Wallet;
 use App\Models\Post;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -22,5 +23,6 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         Post::factory(20)->create();
+        App_Wallet::factory(3)->create();
     }
 }

@@ -47,6 +47,13 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 
+    /**
+     * Get the wallet for the use
+    */
+    public function wallets():HasMany
+    {
+        return $this->hasMany(App_Wallet::class)->chaperone();
+    }
 
     /**
      * Get the attributes that should be cast.
@@ -60,4 +67,5 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
 }
