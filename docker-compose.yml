@@ -1,6 +1,7 @@
 services:
   app:
-    build:
+    image: app_base
+    build: 
       context: .
       dockerfile: Dockerfile
     container_name: laravel_app

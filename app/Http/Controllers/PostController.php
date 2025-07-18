@@ -25,7 +25,7 @@ class PostController extends Controller
             's' => "nullable"
         ]);
 
-        if(empty($search)) return redirect('/blog');
+        if(empty($search['s'])) return redirect('/blog');
 
         $blog = Post::whereFullText('title', $search)
         ->orWhereFullText('subtitle', $search)->paginate(6);
@@ -36,22 +36,6 @@ class PostController extends Controller
         return view('page.blog', compact('blog', 'title', 'search'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Post $post)
     {
         $related = Post::where('category_id', $post->category->id)
@@ -63,27 +47,4 @@ class PostController extends Controller
         return view('blog.blog-post', compact('post', 'related'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Post $post)
-    {
-        //
-    }
 }

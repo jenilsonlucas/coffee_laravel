@@ -16,7 +16,6 @@ Route::get('/blog', [PostController::class, 'index'])->name('post.index');
 Route::post('/blog/buscar', [PostController::class, 'postSearch']);
 Route::get('/blog/{post:uri}', [PostController::class, 'show'])->name('post.show');
 
-
 //Authentication
 Route::get('/entrar', [LoginControlller::class, 'index']);
 Route::post('/entrar', [LoginControlller::class, 'login']);
@@ -36,6 +35,3 @@ Route::middleware('auth')->group(function() {
     })->middleware('signed')->name('verification.verify');
 });
 
-
-
-// Route::get('/post', [PostController::class, 'index'])->name('post.index');
