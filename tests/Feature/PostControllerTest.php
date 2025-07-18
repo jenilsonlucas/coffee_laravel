@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -46,18 +47,35 @@ class PostControllerTest extends TestCase
             "subtitle" => "Aqui podes gerenciar as suas contas avontade"
         ]);
 
-        $response = $this->post('/blog/buscar', ['s' => 'contas']);
+        $response = $this->post("/blog/buscar", ['s' => "contas"]);
 
-        $response->assertStatus(200);
-        $response->assertViewIs('page.blog');
-        $response->assertViewHas('blog');
-        $response->assertViewHas('title', 'PESQUISA POR:');
-        $response->assertViewHas('search', 'contas');
+        $response->assertOk();
+        $response->assertViewIs("page.blog");
+        $response->assertViewHas("blog");
+        $response->assertViewHas("title", "PESQUISA POR:");
+        $response->assertViewHas("search", "contas");
 
         $blog = $response->viewData('blog');
         $this->assertCount(1, $blog->items());
     }
 
+    #[Test]
+    public function returned_a_especific_post():void
+    {
+        $category = Category::factory();
+        $post = Post::factory()->create([
+            "title" => "Testando posts",
+            "uri" => "testando-contas",
+            "category_id" => $category
+        ]);
+        Post::factory(3)->create([
+            "category_id" => $category
+        ]);
 
+        $response = $this->get("/blog/testando-contas");
+
+        $response->assertOk();
+        $response->assertViewHas("post", $post);
+    }
 
 }
