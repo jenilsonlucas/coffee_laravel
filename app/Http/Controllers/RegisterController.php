@@ -27,8 +27,8 @@ class RegisterController extends Controller
     public function register(Request $request):RedirectResponse
     {        
         $validatedData = $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
             'email' => 'required|email:rfc|unique:users',
             'password' => 'required|min:8'
         ]);
