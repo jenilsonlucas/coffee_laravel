@@ -62,20 +62,22 @@ class PostControllerTest extends TestCase
     #[Test]
     public function returned_a_especific_post():void
     {
-        $category = Category::factory();
+        $category = Category::factory()->create();
         $post = Post::factory()->create([
             "title" => "Testando posts",
             "uri" => "testando-contas",
-            "category_id" => $category
+            "category_id" => $category->id
         ]);
-        Post::factory(3)->create([
-            "category_id" => $category
+        $relateds = Post::factory(3)->create([
+            "category_id" => $category->id
         ]);
 
         $response = $this->get("/blog/testando-contas");
 
         $response->assertOk();
         $response->assertViewHas("post", $post);
-    }
+
+        $response->assertViewHas("related", $relateds);
+    }   
 
 }
