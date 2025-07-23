@@ -21,6 +21,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
-
+RUN chmod +x /app/docker/entrypoint.sh
+ENTRYPOINT [ "/app/docker/entrypoint.sh" ]
+CMD ["php-fpm"]
 RUN php artisan storage:link

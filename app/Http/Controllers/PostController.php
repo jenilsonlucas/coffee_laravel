@@ -12,54 +12,39 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $blog = Post::orderby('post_at', 'desc')->paginate(6);
+        return view('page.blog', compact('blog'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * searching a post
      */
-    public function create()
+    public function postSearch(Request $request)
     {
-        //
+        $search = $request->validate([
+            's' => "nullable"
+        ]);
+
+        if(empty($search['s'])) return redirect('/blog');
+
+        $blog = Post::whereFullText('title', $search)
+        ->orWhereFullText('subtitle', $search)->paginate(6);
+        
+        $title = "PESQUISA POR:";
+        $search = $search['s'];
+
+        return view('page.blog', compact('blog', 'title', 'search'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Post $post)
     {
-        //
+        $related = Post::where('category_id', $post->category->id)
+            ->where('id', '<>', $post->id)
+            ->limit(3)
+            ->orderby('post_at', 'desc')
+            ->get();
+
+        return view('blog.blog-post', compact('post', 'related'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Post $post)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Post $post)
-    {
-        //
-    }
 }

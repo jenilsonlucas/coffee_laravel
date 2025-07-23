@@ -1,6 +1,7 @@
 services:
   app:
-    build:
+    image: app_base
+    build: 
       context: .
       dockerfile: Dockerfile
     container_name: laravel_app
@@ -17,6 +18,7 @@ services:
     networks:
       - laravel
     env_file: ".env"
+
   nginx:
     image: nginx:latest
     container_name: laravel_nginx
@@ -29,7 +31,6 @@ services:
       - app
     networks:
       - laravel
-
   postgres:
     image: postgres:15.4
     container_name: laravel_postgres
