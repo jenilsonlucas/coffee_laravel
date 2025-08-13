@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\LoginControlller;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
@@ -35,3 +36,5 @@ Route::middleware('auth')->group(function() {
     })->middleware('signed')->name('verification.verify');
 });
 
+Route::get("/app", [AppController::class, "home"]);
+Route::get("/test", [AppController::class, "test"]);

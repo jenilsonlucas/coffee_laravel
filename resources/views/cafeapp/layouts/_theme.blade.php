@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <link rel="stylesheet" href="{{ asset('shared/styles/styles.css') }}"/>
     <link rel="stylesheet" href="{{ asset('shared/styles/boot.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('assets/css/message.css') }}"/>
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('/cafeapp/assets/css/style.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('/cafeapp/assets/css/message.css') }}"/>
+    <link rel="shortcut icon" href="{{ asset('/cafeapp/assets/images/favicon.png') }}" type="image/x-icon">
 </head>
 <body>
-
-<div class="ajax_load">
+    <div class="ajax_load">
     <div class="ajax_load_box">
-        <div class="ajax_load_box_circle"></div>
-        <p class="ajax_load_box_title">Aguarde, carregando...</p>
+    <div class="ajax_load_box_circle"></div>
+    <p class="ajax_load_box_title">Aguarde, carregando...</p>
     </div>
 </div>
 
@@ -22,26 +22,27 @@
     <header class="app_header">
         <h1><a class="icon-coffee transition" href="{{url('/app')}}" title="CaféApp">CaféApp</a></h1>
         <ul class="app_header_widget">
-            <li class="radius icon-filter wallet"> {{(session()->has("walletfilter") ? (new \Source\Models\CafeApp\AppWallet())->findById(session()->walletfilter)->wallet : "Saldo Geral")}}
+            <li class="radius icon-filter wallet"> {{(session()->has("walletfilter") ? (new \Source\Models\CafeApp\AppWallet())->where("name", session()->walletfilter)->wallet : "Saldo Geral")}}
                 <ul>
-                    <?php if (session()->has("walletfilter")): ?>
-                        <li class="radius icon-briefcase" data-walletfilter="<?= url("/app/dash"); ?>"
+                    @session("walletfilter")
+                        <li class="radius icon-briefcase" data-walletfilter="{{ url('/app/dash') }}"
                             data-wallet="all">Saldo Geral
                         </li>
-                    <?php endif; ?>
+                    @endsession
 
                     <?php
-                    $userId = user()->id;
-                    $wallets = (new \Source\Models\CafeApp\AppWallet())
-                        ->find("user_id = :user", "user={$userId}")
-                        ->order("wallet")
-                        ->fetch(true);
+
+                    $userId = Auth::id();
+                    $wallets = (new \App\Models\App_Wallet())
+                        ->where("user_id", $userId)
+                        ->orderBy("wallet")
+                        ->get();
 
                     foreach ($wallets as $walletIt):
                         if (!session()->has("walletfilter") || $walletIt->id != session()->walletfilter):
                             ?>
-                            <li class="radius icon-suitcase" data-walletfilter="<?= url("/app/dash"); ?>"
-                                data-wallet="<?= $walletIt->id; ?>"><?= $walletIt->wallet; ?></li>
+                            <li class="radius icon-suitcase" data-walletfilter="{{ url('/app/dash')}}"
+                                data-wallet="{{ $walletIt->id }}"><{{ $walletIt->wallet}}</li>
                         <?php
                         endif;
                     endforeach;
@@ -59,34 +60,23 @@
 
             <div class="app_sidebar_user app_widget_title">
                 <span class="user">
-                    <?php if (user()->photo()): ?>
-                        <img class="rounded" alt="<?= user()->first_name; ?>" title="<?= user()->first_name; ?>"
-                             src="<?= image(user()->photo, 260, 260); ?>"/>
-                    <?php else: ?>
-                        <img class="rounded" alt="<?= user()->first_name; ?>" title="<?= user()->first_name; ?>"
-                             src="<?= theme("/assets/images/avatar.jpg", CONF_VIEW_APP); ?>"/>
-                    <?php endif; ?>
-                    <span><?= user()->first_name; ?></span>
+                        @if(Auth::user()->photo)
+                            <img class="rounded" alt="{{ Auth::user()->first_name }}" title="{{ Auth::user()->first_name }}"
+                                src="{{ asset(Auth::user()->photo) }}"/>
+                        @else
+                            <img class="rounded" alt="{{ Auth::user()->first_name }}" title="{{ Auth::user()->first_name}}"
+                                src="{{ asset('/assets/images/avatar.jpg')}}"/>
+                        @endif
+                        <span>{{ Auth::user()->first_name }}</span>
                 </span>
-
-                <?php
-                $subscribe = (new \Source\Models\CafeApp\AppSubscription())
-                    ->find("user_id = :user AND status != :status", "user={$userId}&status=canceled")
-                    ->fetch();
-
-                if ($subscribe):?>
-                    <span class="plan radius icon-star"><?= $subscribe->plan()->name; ?></span>
-                <?php else: ?>
-                    <span class="plan radius">FREE</span>
-                <?php endif; ?>
+                <span class="plan radius">FREE</span>
             </div>
-
-            <?= $v->insert("views/sidebar"); ?>
+            
+            @include("cafeapp.includes.sidebar") 
         </nav>
 
         <main class="app_main">
-            <div class="al-center"><?= flash(); ?></div>
-            <?= $v->section("content"); ?>
+         @yield("content")
         </main>
     </div>
 
@@ -97,12 +87,15 @@
         </span>
     </footer>
 
-    <?= $v->insert("views/modals"); ?>
+    @include("cafeapp.includes.modals")
 </div>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-53658515-18"></script>
-<script src="<?= theme("/assets/scripts.js", CONF_VIEW_APP); ?>"></script>
-<?= $v->section("scripts"); ?>
+<script src="{{ asset('/shared/scripts/jquery.min.js')}}"></script>
+<script src="{{ asset('/shared/scripts/jquery.form.js')}}"></script>
+<script src="{{ asset('/shared/scripts/jquery-ui.js')}}"></script>
+<script src="{{ asset('/shared/scripts/jquery.mask.js')}}"></script>
+<script src="{{ asset('/shared/scripts/highcharts.js')}}"></script>
+<script src="{{ asset('/cafeapp/assets/js/scripts.js') }}"></script>
+@yield("scripts")
 
 </body>
 </html>

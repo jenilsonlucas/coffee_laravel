@@ -1,5 +1,8 @@
-<?php $v->layout("_theme"); ?>
-    <div class="app_main_box">
+@extends("cafeapp.layouts._theme")
+ <h1></h1>
+@section("content")
+
+<div class="app_main_box">
         <section class="app_main_left">
             <article class="app_widget">
                 <header class="app_widget_title">
@@ -14,16 +17,16 @@
                         <h2 class="icon-calendar-minus-o">À receber:</h2>
                     </header>
                     <div class="app_widget_content">
-                        <?php if (!empty($income)): ?>
-                            <?php foreach ($income as $incomeItem): ?>
-                                <?= $v->insert("views/balance", ["invoice" => $incomeItem->data()]); ?>
-                            <?php endforeach; ?>
-                        <?php else: ?>
+                        @if(!empty($income))
+                            @foreach($income as $incomeItem)
+                                @include("views.balance", ["invoice" => $incomeItem->data()])
+                            @endforeach
+                        @else
                             <div class="message success al-center icon-check-square-o">
                                 No momento, não existem contas a receber.
                             </div>
-                        <?php endif; ?>
-                        <a href="<?= url("app/receber"); ?>" title="Receitas"
+                        @endif
+                        <a href="{{ url('app/receber')}}" title="Receitas"
                            class="app_widget_more transition">+ Receitas</a>
                     </div>
                 </article>
@@ -33,16 +36,16 @@
                         <h2 class="icon-calendar-check-o">À pagar:</h2>
                     </header>
                     <div class="app_widget_content">
-                        <?php if (!empty($expense)): ?>
-                            <?php foreach ($expense as $expenseItem): ?>
-                                <?= $v->insert("views/balance", ["invoice" => $expenseItem->data()]); ?>
-                            <?php endforeach; ?>
-                        <?php else: ?>
+                        @if (!empty($expense))
+                            @foreach($expense as $expenseItem)
+                                @include("views/balance", ["invoice" => $expenseItem->data()])
+                            @endforeach
+                        @else
                             <div class="message error al-center icon-check-square-o">
                                 No momento, não existem contas a pagar.
                             </div>
-                        <?php endif; ?>
-                        <a href="<?= url("app/pagar"); ?>" title="Despesas"
+                        @endif
+                        <a href="{{ url('app/pagar')}}" title="Despesas"
                            class="app_widget_more transition">+ Despesas</a>
                     </div>
                 </article>
@@ -59,16 +62,16 @@
                 </li>
             </ul>
 
-            <article
-                    class="app_flex app_wallet <?= ($wallet->balance == "positive" ? "gradient-green" : "gradient-red"); ?>">
+             <article
+                    class="app_flex <?= (!empty($wallet->wallet) && $wallet->wallet >= 0 ? "gradient-green" : "gradient-red"); ?>">
                 <header class="app_flex_title">
-                    <h2 class="icon-money radius"><?= (session()->has("walletfilter") ? (new \Source\Models\CafeApp\AppWallet())->findById(session()->walletfilter)->wallet : "Saldo Geral"); ?></h2>
+                    <h2 class="icon-money">Saldo</h2>
                 </header>
 
-                <p class="app_flex_amount">R$ <?= str_price(($wallet->wallet ?? 0)); ?></p>
+                <p class="app_flex_amount">R$ {{ ($wallet->wallet ?? 0) }} </p>
                 <p class="app_flex_balance">
-                    <span class="income">Receitas: R$ <?= str_price(($wallet->income ?? 0)); ?></span>
-                    <span class="expense">Despesas: R$ <?= str_price(($wallet->expense ?? 0)); ?></span>
+                    <span class="income">Receitas: R$ {{ ($wallet->income ?? 0) }}</span>
+                    <span class="expense">Despesas: R$ {{ ($wallet->expense ?? 0) }}</span>
                 </p>
             </article>
 
@@ -77,28 +80,28 @@
                     <h2 class="icon-graduation-cap">Aprenda:</h2>
                 </header>
                 <div class="app_widget_content">
-                    <?php if (!empty($posts)): ?>
-                        <?php foreach ($posts as $post): ?>
+                    @if(!empty($posts))
+                        @foreach($posts as $post)
                             <article class="app_widget_blog_article">
                                 <div class="thumb">
-                                    <img alt="<?= $post->title; ?>" title="<?= $post->title; ?>"
-                                         src="<?= image($post->cover, 300); ?>"/>
+                                    <img alt="{{ $post->title }}" title="{{ $post->title }}"
+                                         src="{{ asset($post->cover) }}"/>
                                 </div>
                                 <h3 class="title">
-                                    <a target="_blank" href="<?= url("/blog/{$post->uri}"); ?>"
-                                       title="<?= $post->title; ?>"><?= str_limit_chars($post->title, 50); ?></a>
+                                    <a target="_blank" href="{{ url('/blog/{$post->uri}') }}"
+                                       title="{{ $post->title }}">{{  Str::limit($post->title, 50) }}</a>
                                 </h3>
                             </article>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                    <a target="_blank" href="<?= url("/blog"); ?>" title="Blog"
+                        @endforeach
+                    @endif
+                    <a target="_blank" href="{{ url('/blog') }}" title="Blog"
                        class="app_widget_more transition">Ver Mais...</a>
                 </div>
             </section>
         </section>
-    </div>
-
-<?php $v->start("scripts"); ?>
+    </div> 
+@endsection
+@section("scripts")
     <script type="text/javascript">
         $(function () {
             Highcharts.setOptions({
@@ -119,7 +122,7 @@
                 },
                 title: null,
                 xAxis: {
-                    categories: [<?= $chart->categories;?>],
+                    categories: [<?= $chartData->categories;?>],
                     minTickInterval: 1
                 },
                 yAxis: {
@@ -141,12 +144,12 @@
                 },
                 series: [{
                     name: 'Receitas',
-                    data: [<?= $chart->income;?>],
+                    data: [<?= $chartData->income;?>],
                     color: '#61DDBC',
                     lineColor: '#36BA9B'
                 }, {
                     name: 'Despesas',
-                    data: [<?= $chart->expense;?>],
+                    data: [<?= $chartData->expense;?>],
                     color: '#F76C82',
                     lineColor: '#D94352'
                 }]
@@ -179,4 +182,4 @@
             });
         });
     </script>
-<?php $v->end(); ?>
+@endsection

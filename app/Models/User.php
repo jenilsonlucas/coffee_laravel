@@ -48,13 +48,20 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     /**
-     * Get the wallet for the use
+     * Get the wallet for the user
     */
     public function wallets():HasMany
     {
         return $this->hasMany(App_Wallet::class)->chaperone();
     }
 
+    /**
+     * get the invoice for the user
+     */
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(AppInvoice::class)->chaperone();
+    }
     /**
      * Get the attributes that should be cast.
      *
