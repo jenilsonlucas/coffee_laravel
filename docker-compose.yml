@@ -44,6 +44,8 @@ services:
       POSTGRES_DB: ${DB_DATABASE}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./docker/postgres_data:/var/lib/postgresql/data
     networks:
       - laravel
 

@@ -20,7 +20,6 @@ class App_WalletFactory extends Factory
         return [
             'user_id' => User::factory(),
             'wallet' => fake()->country(),
-            'free' => fake()->boolean()
         ];
     }
 }

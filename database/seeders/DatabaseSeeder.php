@@ -24,25 +24,25 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $user = User::factory()->create([
-            "first_name" => "Test",
-            "email" => "jenilsonllucas@gmail.com",
-            "password" => "12345678"
-        ]);
+        // $user = User::factory()->create([
+        //     "first_name" => "Test",
+        //     "email" => "test@gmail.com",
+        //     "password" => "12345678"
+        // ]);
        
         Post::factory(20)->create();
        
-        App_Wallet::factory(3)->create();
+        // App_Wallet::factory(3)->create();
        
-        AppInvoice::factory(12)
-        ->state(new Sequence(
-            ["type" => "income"],
-            ["type" => "expense"],
-            ["status" => "paid"],
-            ["status" => "unpaid"] 
-        ))
-        ->create([
-            "user_id" => $user
-        ]);
+        // AppInvoice::factory(12)
+        // ->state(new Sequence(
+        //     ["type" => "income"],
+        //     ["type" => "expense"],
+        //     ["status" => "paid"],
+        //     ["status" => "unpaid"] 
+        // ))
+        // ->create([
+        //     "user_id" => $user
+        // ]);
     }
 }

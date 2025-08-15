@@ -1,6 +1,7 @@
 <div class="app_modal_box app_modal_{{$type}}">
     <p class="title icon-calendar-check-o">Nova {{ ($type == 'income' ? "Receita" : "Despesa") }}:</p>
     <form class="app_form" action="{{ url('/app/launch') }}" method="post">
+        @csrf
         <input type="hidden" name="currency" value="BRL"/>
         <input type="hidden" name="type" value="{{ $type }}"/>
 
@@ -35,7 +36,7 @@
                 <span class="field icon-filter">Categoria:</span>
                 <select name="category">
                     @foreach($categories as $category): ?>
-                        <option value="{{ $category->id }}">&ofcir;{{ $category->name }}></option>
+                        <option value="{{ $category->id }}">&ofcir; {{ $category->name }}</option>
                     @endforeach
                 </select>
             </label>

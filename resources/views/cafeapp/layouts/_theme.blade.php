@@ -22,33 +22,7 @@
     <header class="app_header">
         <h1><a class="icon-coffee transition" href="{{url('/app')}}" title="CaféApp">CaféApp</a></h1>
         <ul class="app_header_widget">
-            <li class="radius icon-filter wallet"> {{(session()->has("walletfilter") ? (new \Source\Models\CafeApp\AppWallet())->where("name", session()->walletfilter)->wallet : "Saldo Geral")}}
-                <ul>
-                    @session("walletfilter")
-                        <li class="radius icon-briefcase" data-walletfilter="{{ url('/app/dash') }}"
-                            data-wallet="all">Saldo Geral
-                        </li>
-                    @endsession
-
-                    <?php
-
-                    $userId = Auth::id();
-                    $wallets = (new \App\Models\App_Wallet())
-                        ->where("user_id", $userId)
-                        ->orderBy("wallet")
-                        ->get();
-
-                    foreach ($wallets as $walletIt):
-                        if (!session()->has("walletfilter") || $walletIt->id != session()->walletfilter):
-                            ?>
-                            <li class="radius icon-suitcase" data-walletfilter="{{ url('/app/dash')}}"
-                                data-wallet="{{ $walletIt->id }}"><{{ $walletIt->wallet}}</li>
-                        <?php
-                        endif;
-                    endforeach;
-                    ?>
-                </ul>
-            </li>
+            <li class="radius icon-filter wallet"> Saldo Geral</li>
             <li data-mobilemenu="open" class="app_header_widget_mobile radius transition icon-menu icon-notext"></li>
         </ul>
     </header>
@@ -82,8 +56,8 @@
 
     <footer class="app_footer">
         <span class="icon-coffee">
-            CaféApp - Desenvolvido na formação FSPHP<br>
-            &copy; UpInside - Todos os direitos reservados
+            CaféApp - Desenvolvido por Jenilson Lucas<br>
+            &copy; Jenilson Lucas - Todos os direitos reservados
         </span>
     </footer>
 

@@ -1,7 +1,7 @@
 <div class="app_modal" data-modalclose="true">
     <!--INCOME-->
    @php
-        $wallets = (new \app\Models\App_Wallet())
+        $wallets = (new \App\Models\App_Wallet())
             ->select("id", "wallet")
             ->where("user_id", Auth::id())
             ->orderBy("wallet")

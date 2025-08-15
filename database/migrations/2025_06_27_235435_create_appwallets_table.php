@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('appwallets', function (Blueprint $table) {
-            $table->id()->unsigned();
-            $table->primary('id');
+            $table->id();
             $table->foreignId('user_id')->unsigned()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('wallet', 255);
-            $table->tinyInteger('free')->default(0);
             $table->timestamps();
         });
     }

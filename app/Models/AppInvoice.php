@@ -15,11 +15,17 @@ class AppInvoice extends Model
         "user_id",
         "wallet_id",
         "category_id",
+        "invoice_of",
         "description",
         "type",
         "value",
+        "currency",
         "due_at",
-        "repeat_when"
+        "repeat_when",
+        "period",
+        "enrollemnts",
+        "enrollemnts_of",
+        "status"
     ];
 
 

@@ -6,6 +6,7 @@ use App\Models\AppInvoice;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
@@ -13,7 +14,9 @@ class AppController extends Controller
 {
     public function __construct(
         protected User $user
-    ) {}
+    ) {
+        $this->user = Auth::user();
+    }
 
     public function home()
     {
@@ -53,13 +56,13 @@ class AppController extends Controller
                     AND EXTRACT(YEAR FROM sub.due_at) = EXTRACT(YEAR FROM main.due_at)
                     AND EXTRACT(MONTH FROM sub.due_at) = EXTRACT(MONTH FROM main.due_at)
                 ) AS expense
-            ", [1, 'paid', 1, 'paid'])
-            ->where("main.user_id", 1)
+            ", [$this->user->id, 'paid', $this->user->id, 'paid'])
+            ->where("main.user_id", $this->user->id)
             ->where("main.status", "paid")
             ->whereRaw("main.due_at >= NOW() - INTERVAL '4 months'")
             ->groupBy(DB::raw("main.due_at"))
             ->limit(5)
-            ->get();           
+            ->get();      
             
         if ($chart->isNotEmpty()) {
             $chartCategories = [];
@@ -72,24 +75,24 @@ class AppController extends Controller
                 $chartExpense[] = $chartItem->expense;
             }
             
-            $chartData->categories = "'" . implode("','", $chartCategories);
-            $chartData->income = "'" . implode("','", $chartIncome);
-            $chartData->expense = "'" . implode("','", $chartExpense);
+            $chartData->categories = "'" . implode("','", $chartCategories) . "'";
+            $chartData->income = implode(",", array_map("abs", $chartIncome));
+            $chartData->expense = implode(",", array_map("abs", $chartExpense));
         }
         //END CHART
 
         //INCOME && EXPENSE
-        $income = AppInvoice::where("user_id", 1)
+        $income = AppInvoice::where("user_id", $this->user->id)
         ->where("type", "income")
         ->where("status", "unpaid")
-        ->whereRaw("due_at <= NOW() - INTERVAL '1 months'")
+        ->whereRaw("due_at <= NOW() + INTERVAL '1 months'")
         ->orderBy("due_at", "ASC")
         ->get();
 
-        $expense = AppInvoice::where("user_id", 1)
+        $expense = AppInvoice::where("user_id", $this->user->id)
         ->where("type", "expense")
         ->where("status", "unpaid")
-        ->whereRaw("due_at <= NOW() - INTERVAL '1 months'")
+        ->whereRaw("due_at <= NOW() + INTERVAL '1 months'")
         ->orderBy("due_at", "ASC")
         ->get();
 
@@ -101,8 +104,8 @@ class AppController extends Controller
                (SELECT SUM(value) FROM app_invoices WHERE user_id = ? AND status = ? AND type = 'income') AS income,
                (SELECT SUM(value) FROM app_invoices WHERE user_id = ? AND status = ? AND type = 'expense') AS expense  
             "
-        , [1, "paid", 1, "paid"])
-        ->where("user_id", 1)
+        , [$this->user->id, "paid", $this->user->id, "paid"])
+        ->where("user_id", $this->user->id)
         ->where("status", "paid")
         ->first();
 

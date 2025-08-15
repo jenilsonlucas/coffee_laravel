@@ -17,9 +17,9 @@
                         <h2 class="icon-calendar-minus-o">À receber:</h2>
                     </header>
                     <div class="app_widget_content">
-                        @if(!empty($income))
+                        @if($income->isNotEmpty())
                             @foreach($income as $incomeItem)
-                                @include("views.balance", ["invoice" => $incomeItem->data()])
+                                @include("cafeapp.includes.balance", ["invoice" => $incomeItem])
                             @endforeach
                         @else
                             <div class="message success al-center icon-check-square-o">
@@ -36,9 +36,9 @@
                         <h2 class="icon-calendar-check-o">À pagar:</h2>
                     </header>
                     <div class="app_widget_content">
-                        @if (!empty($expense))
+                        @if ($expense->isNotEmpty())
                             @foreach($expense as $expenseItem)
-                                @include("views/balance", ["invoice" => $expenseItem->data()])
+                                @include("cafeapp.includes.balance", ["invoice" => $expenseItem])
                             @endforeach
                         @else
                             <div class="message error al-center icon-check-square-o">
@@ -68,10 +68,10 @@
                     <h2 class="icon-money">Saldo</h2>
                 </header>
 
-                <p class="app_flex_amount">R$ {{ ($wallet->wallet ?? 0) }} </p>
+                <p class="app_flex_amount">R$ {{ (!empty($wallet->wallet) ? number_format($wallet->wallet, 2, ',', '.') : 0) }} </p>
                 <p class="app_flex_balance">
-                    <span class="income">Receitas: R$ {{ ($wallet->income ?? 0) }}</span>
-                    <span class="expense">Despesas: R$ {{ ($wallet->expense ?? 0) }}</span>
+                    <span class="income">Receitas: R$ {{ (!empty($wallet->income) ? number_format($wallet->income, 2, ',', '.') : 0) }}</span>
+                    <span class="expense">Despesas: R$ {{ (!empty($wallet->expense) ? number_format($wallet->expense, 2, ',', '.') : 0) }}</span>
                 </p>
             </article>
 
@@ -88,7 +88,7 @@
                                          src="{{ asset($post->cover) }}"/>
                                 </div>
                                 <h3 class="title">
-                                    <a target="_blank" href="{{ url('/blog/{$post->uri}') }}"
+                                    <a target="_blank" href="{{ url('/blog/' . $post->uri) }}"
                                        title="{{ $post->title }}">{{  Str::limit($post->title, 50) }}</a>
                                 </h3>
                             </article>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppController;
+use App\Http\Controllers\AppInvoiceController;
 use App\Http\Controllers\LoginControlller;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
@@ -36,5 +37,14 @@ Route::middleware('auth')->group(function() {
     })->middleware('signed')->name('verification.verify');
 });
 
-Route::get("/app", [AppController::class, "home"]);
+
+Route::prefix('app')->group(function () {
+ 
+    Route::get("/", [AppController::class, "home"]);
+    Route::get("/sair", [LoginControlller::class, "logout"]);
+
+    Route::post('/launch', [AppInvoiceController::class, 'launch'])
+    ->middleware('throttle:applaunch');
+});
+
 Route::get("/test", [AppController::class, "test"]);
