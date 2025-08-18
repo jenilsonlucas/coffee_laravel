@@ -41,10 +41,13 @@ Route::middleware('auth')->group(function() {
 Route::prefix('app')->group(function () {
  
     Route::get("/", [AppController::class, "home"]);
+    Route::get("/receber/{status?}/{category?}/{date?}", [AppInvoiceController::class, "income"]);
+    Route::get("/pagar/{status?}/{category?}/{date?}", [AppInvoiceController::class, "expense"]);
     Route::get("/sair", [LoginControlller::class, "logout"]);
 
     Route::post('/launch', [AppInvoiceController::class, 'launch'])
     ->middleware('throttle:applaunch');
+    Route::post("/filter", [AppController::class, "filter"]);
 });
 
 Route::get("/test", [AppController::class, "test"]);

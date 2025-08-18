@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\App_Category;
 use App\Models\AppInvoice;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -10,45 +11,6 @@ use Illuminate\Validation\Rule;
 
 class AppInvoiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(AppInvoice $appInvoice)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AppInvoice $appInvoice)
-    {
-        //
-    }
 
     public function launch(Request $request)
     {
@@ -81,19 +43,57 @@ class AppInvoiceController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, AppInvoice $appInvoice)
+    public function income(?string $status = null, ?string $category = null, ?string $date = null)
     {
-        //
+        $data = [
+            "status" => $status,
+            "category" => $category,
+            "date" => $date
+        ];
+
+        $categories = App_Category::select("id", "name")
+                    ->where("type", "income")
+                    ->orderByRaw("order_by, name")
+                    ->get();
+        
+        return view("cafeapp.invoices", [
+            "categories" => $categories,
+            "user" => Auth::user(),
+            "type" => "income",
+            "invoices" => (new AppInvoice())
+                ->filter(Auth::user(), "income", $data),
+            "filter" => (object) [
+                "status" => ($data["status"] ?? null),
+                "category" => ($data["category"] ?? null),
+                "date" => (!empty($data["date"]) ? str_replace("-", "/", $data["date"]) : null)
+            ]
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(AppInvoice $appInvoice)
+    public function expense(?string $status = null, ?string $category = null, ?string $date = null)
     {
-        //
+        $data = [
+            "status" => $status,
+            "category" => $category,
+            "date" => $date
+        ];
+
+        $categories = App_Category::select("id", "name")
+                    ->where("type", "expense")
+                    ->orderByRaw("order_by, name")
+                    ->get();
+        
+        return view("cafeapp.invoices", [
+            "categories" => $categories,
+            "user" => Auth::user(),
+            "type" => "expense",
+            "invoices" => (new AppInvoice())
+                ->filter(Auth::user(), "expense", $data),
+            "filter" => (object) [
+                "status" => ($data["status"] ?? null),
+                "category" => ($data["category"] ?? null),
+                "date" => (!empty($data["date"]) ? str_replace("-", "/", $data["date"]) : null)
+            ]
+        ]);
     }
 }

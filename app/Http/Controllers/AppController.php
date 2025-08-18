@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AppInvoice;
 use App\Models\Post;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -123,9 +124,19 @@ class AppController extends Controller
         return view("cafeapp.home", compact("chartData", "income", "expense", "wallet", "posts"));
     }
 
-
-    public function test()
+    public function filter(Request $request)
     {
-        return view("cafeapp.test");
+        $status = (!empty($request->input("status")) ? $request->input("status") : "all");
+        $category = (!empty($request->input("category")) ? $request->input("category") : "all");
+        $date = (!empty($request->input("date")) ? $request->input("date") : date("m/Y"));
+        
+        list($m, $y) = explode("/", $date);
+        $m = ($m >= 1 && $m <= 12 ? $m : date("m"));
+        $y = ($y <= date("Y", strtotime("+10year")) ? $y : date("Y", strtotime("+10year")));
+    
+        $redirect = ($request->input("filter") == "income" ? "receber" : "pagar");
+        return Response()->json([
+            "redirect" => url("/app/{$redirect}/{$status}/{$category}/{$m}-{$y}")
+        ]);
     }
 }
