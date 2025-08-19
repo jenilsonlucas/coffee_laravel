@@ -17,6 +17,7 @@ class AppController extends Controller
         protected User $user
     ) {
         $this->user = Auth::user();
+        (new AppInvoice())->fixed($this->user, 3);
     }
 
     public function home()

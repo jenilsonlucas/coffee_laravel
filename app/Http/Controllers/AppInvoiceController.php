@@ -11,6 +11,10 @@ use Illuminate\Validation\Rule;
 
 class AppInvoiceController extends Controller
 {
+    public function __construct()
+    {
+        (new AppInvoice())->fixed(Auth::user(), 3);
+    }
 
     public function launch(Request $request)
     {
@@ -34,9 +38,29 @@ class AppInvoiceController extends Controller
             "repeat_when" => $request->input("repeat_when"),
             "period" => ($request->input("period") ?? "month"),
             "enrollments" => ($request->input("enrollments") ?? 1),
-            "enrollments_of" => 1,
+            "enrollemnt_of" => 1,
             "status" => ($request->input("repeat_when") == "fixed" ? "paid" : $status)
         ]);
+
+        if($invoice->repeat_when == "enrollment"){
+       
+            $invoiceOf = $invoice->id;
+
+            for($enrollment = 1; $enrollment < $invoice->enrollments; $enrollment++){
+                $newInvoice = $invoice->replicate();
+                $newInvoice->invoice_of = $invoiceOf;
+                $newInvoice->due_at = date("Y-m-d", strtotime($request->input("due_at") . "+{$enrollment}month"));
+                $newInvoice->status = (date($newInvoice->due_at) <= date("Y-m-d") ? "paid" : "unpaid");
+                $newInvoice->enrollemnt_of = $enrollment + 1;
+                $newInvoice->save();
+            }
+        }
+
+        if ($invoice->type == "income") {
+            $this->message->success("Receita lançada com sucesso. Use o filtro para controlar.")->render();
+        } else {
+            $this->message->success("Despesa lançada com sucesso. Use o filtro para controlar.")->render();
+        }
 
         return Response()->json([
             "reload" => true
@@ -94,6 +118,15 @@ class AppInvoiceController extends Controller
                 "category" => ($data["category"] ?? null),
                 "date" => (!empty($data["date"]) ? str_replace("-", "/", $data["date"]) : null)
             ]
+        ]);
+    }
+
+    public function fixas()
+    {
+        return view("cafeapp.recurrences", [
+            "invoices" => AppInvoice::where("user_id", Auth::id())
+                        ->whereRaw("type IN('fixed_income', 'fixed_expense')")
+                        ->get()
         ]);
     }
 }

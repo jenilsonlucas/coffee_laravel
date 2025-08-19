@@ -89,7 +89,7 @@
                     @elseif($invoice->repeat_when == 'enrollment')
                         <span class="app_invoice_link">
                             <a href="{{ url('/app/fatura/'.$invoice->invoice_of) }}"
-                               title="Controlar Parcelamento">{{ str_pad($invoice->enrollment_of, 2, 0,
+                               title="Controlar Parcelamento">{{ str_pad($invoice->enrollemnt_of, 2, 0,
                                     0) }} de {{ str_pad($invoice->enrollments, 2, 0, 0) }}</a>
                         </span>
                     @else
