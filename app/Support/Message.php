@@ -75,6 +75,13 @@ class Message {
          return $this;
     }
 
+    public function warning(string $text): Message
+    {
+         $this->type = "warning icon-warning";
+         $this->text = $text;
+         return $this;
+    }
+
     /**
      * @return string
      */

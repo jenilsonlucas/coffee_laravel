@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginControlller;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -44,11 +45,13 @@ Route::prefix('app')->group(function () {
     Route::get("/receber/{status?}/{category?}/{date?}", [AppInvoiceController::class, "income"]);
     Route::get("/pagar/{status?}/{category?}/{date?}", [AppInvoiceController::class, "expense"]);
     Route::get("/fixas", [AppInvoiceController::class, "fixas"]);
+    Route::get("/perfil", [UserController::class, "edit"]);
     Route::get("/sair", [LoginControlller::class, "logout"]);
 
     Route::post('/launch', [AppInvoiceController::class, 'launch'])
     ->middleware('throttle:applaunch');
     Route::post("/filter", [AppController::class, "filter"]);
+    Route::put("/profile", [UserController::class, "profile"]);
 });
 
 Route::get("/test", [AppController::class, "test"]);
