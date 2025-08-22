@@ -15,8 +15,10 @@ class App_Category extends Model
     protected $table = "appCategories";
 
     protected $fillable = [
+        "sub_of",
         "name", 
-        "type"
+        "type",
+        "order_by"
     ];
     /**
      * get the invoices for the category

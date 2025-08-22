@@ -13,6 +13,7 @@ class AppInvoiceController extends Controller
 {
     public function __construct()
     {
+        parent::__construct();
         (new AppInvoice())->fixed(Auth::user(), 3);
     }
 
@@ -128,5 +129,32 @@ class AppInvoiceController extends Controller
                         ->whereRaw("type IN('fixed_income', 'fixed_expense')")
                         ->get()
         ]);
+    }
+
+    public function onpaid(Request $request)
+    {
+        $invoice = AppInvoice::where("user_id", Auth::id())
+                ->where("id", $request->input("invoice"))->first();
+        
+   
+        if(empty($invoice)){
+            $this->message->warning("Ooops! Ocorreu um erro ao actualizar o lançamento :/")->flash();
+            return Response()->json([
+                "reload" => true
+            ]);
+        }
+
+        $invoice->status = ($invoice->status == "paid" ? "unpaid" : "paid");
+        $invoice->save();
+        $m = date("m");
+        $y = date("Y");
+
+        if($request->input("date")){
+            list($m, $y) = explode("/", $request->input("date"));
+        }
+
+        return Response()->json([
+            "onpaid" => (new AppInvoice())->balance(Auth::user(), $y, $m, $invoice->type)
+        ]); 
     }
 }

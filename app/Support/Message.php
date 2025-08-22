@@ -2,6 +2,8 @@
 
 namespace App\Support;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
 /**
  * COFFEE CODE
  * @author Jenilson D. Da C. Lucas
@@ -88,5 +90,13 @@ class Message {
     public function render(): string
     {
         return "<div class='message {$this->getType()}'> {$this->getText()} </div>";
+    }
+
+    /**
+     * Set flash Session Key
+     */
+    public function flash(): void
+    {
+        (new Session())->set("flash", $this);
     }
 }

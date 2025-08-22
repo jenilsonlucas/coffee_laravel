@@ -1,6 +1,10 @@
+
 $(function () {
     var effecttime = 200;
 
+    const csrf_token = document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute("content");
     /*
      * MOBILE MENU
      */
@@ -179,6 +183,8 @@ $(function () {
     $("[data-onpaid]").click(function (e) {
         var clicked = $(this);
         var dataset = clicked.data();
+        dataset._method = "PUT";
+        dataset._token = csrf_token;
 
         $.post(clicked.data("onpaid"), dataset, function (response) {
             //reload by error

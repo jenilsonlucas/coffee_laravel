@@ -7,6 +7,7 @@ use App\Support\Message;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
@@ -55,7 +56,8 @@ class UserController extends Controller
         $this->user->gender = $validateData["gender"];
         $this->user->document = preg_replace("/[^A-Za-z0-9]/", "", $validateData["document"]);
         $this->user->datebirth = "{$y}-{$m}-{$d}";
-
+        $this->user->password = Hash::make($validateData["password"]);
+  
         if ($request->hasFile("photo")) {
             $name = str_replace("storage/", "", $this->user->photo);
             Storage::disk('public')->delete($name);

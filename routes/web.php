@@ -7,9 +7,11 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
+use Dom\Attr;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Predis\Command\Redis\APPEND;
 
 Route::get('/',  [PageController::class, 'index']);
 Route::get('/sobre', [PageController::class, 'about']);
@@ -50,8 +52,9 @@ Route::prefix('app')->group(function () {
 
     Route::post('/launch', [AppInvoiceController::class, 'launch'])
     ->middleware('throttle:applaunch');
+    Route::put("/onpaid", [AppInvoiceController::class, 'onpaid']);
     Route::post("/filter", [AppController::class, "filter"]);
     Route::put("/profile", [UserController::class, "profile"]);
+
 });
 
-Route::get("/test", [AppController::class, "test"]);

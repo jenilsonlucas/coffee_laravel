@@ -21,7 +21,10 @@ class AppCategoryFactory extends Factory
     {
         return [
             "name" => fake()->monthName(),
-            "type" => fake()->monthName()
+            "type" => fake()->monthName(),
+            "sub_of" => null,
+            "order_by" => rand(0, 5)
+
         ];
     }
 }

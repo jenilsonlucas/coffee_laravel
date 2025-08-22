@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('shared/styles/boot.css') }}"/>
     <link rel="stylesheet" href="{{ asset('/cafeapp/assets/css/style.css') }}"/>
     <link rel="stylesheet" href="{{ asset('/cafeapp/assets/css/message.css') }}"/>
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <link rel="shortcut icon" href="{{ asset('/cafeapp/assets/images/favicon.png') }}" type="image/x-icon">
 </head>
 <body>

@@ -92,11 +92,11 @@ class AppInvoice extends Model
                                 ->where("invoice_of", $fixedItem->id)
                                 ->whereRaw("EXTRACT(YEAR FROM due_at) = {$item->format('Y')}")
                                 ->whereRaw("EXTRACT(MONTH FROM due_at) = {$item->format('m')}")
-                                ->get();
+                                ->get();            
                 if($getFixed->isEmpty()){
                     $newItem = $fixedItem->replicate();
                     $newItem->invoice_of = $invoice;
-                    $newItem->type = str_replace("fixed_,", "", $newItem->type);
+                    $newItem->type = str_replace("fixed_", "", $newItem->type);
                     $newItem->due_at = $item->format("Y-m-d");
                     $newItem->status = ($item->format("Y-m-d") <= date("Y-m-d") ? "paid" : "unpaid");
                     $newItem->save();
@@ -134,6 +134,29 @@ class AppInvoice extends Model
             $due->limit($limit);
 
         return $due->get();
+    }
+
+
+    public function balance(User $user, int $year, int $month, string $type): ?object
+    {
+        $onpaid = $this->selectRaw("
+             (SELECT SUM(value) FROM app_invoices where user_id = ? AND type = ? 
+                AND EXTRACT(YEAR FROM due_at) = ? AND EXTRACT(MONTH FROM due_at) = ? AND status = 'paid' ) AS paid,
+             (SELECT SUM(value) FROM app_invoices where user_id = ? AND type = ? 
+                AND EXTRACT(YEAR FROM due_at) = ? AND EXTRACT(MONTH FROM due_at) = ? AND status = 'unpaid' ) AS unpaid
+            ",[$user->id, $type, $year, $month, $user->id, $type, $year, $month])
+            ->where("user_id", $user->id)
+            ->first();
+
+  
+        if(empty($onpaid)){
+            return null;
+        }
+
+        return (object)[
+            "paid" => number_format(($onpaid->paid ?? 0), 2, ',', '.'),
+            "unpaid" => number_format(($onpaid->unpaid ?? 0), 2, ',', '.')
+        ];
     }
 
     protected function casts(): array
