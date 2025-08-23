@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         //     "password" => "12345678"
         // ]);
        
-        // Post::factory(20)->create();
+        Post::factory(20)->create();
         
         App_Category::factory()->create([
             "name" => "Sálario",
@@ -121,18 +121,5 @@ class DatabaseSeeder extends Seeder
             "type" => "expense",
             "order_by" => 2
         ]);
-
-        // App_Wallet::factory(3)->create();
-       
-        // AppInvoice::factory(12)
-        // ->state(new Sequence(
-        //     ["type" => "income"],
-        //     ["type" => "expense"],
-        //     ["status" => "paid"],
-        //     ["status" => "unpaid"] 
-        // ))
-        // ->create([
-        //     "user_id" => $user
-        // ]);
     }
 }

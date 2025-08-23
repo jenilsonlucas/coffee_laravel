@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -20,7 +21,7 @@ class createDefaultWallet
     /**
      * Handle the event.
      */
-    public function handle(Verified $event): void
+    public function handle(Registered $event): void
     {
         $event->user->wallets()->create([
             "user_id" => Auth::id(),
