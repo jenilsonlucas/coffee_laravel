@@ -1,8 +1,9 @@
-<div class="app_modal_box app_modal_<?= $type; ?>">
-    <p class="title icon-calendar-check-o">Nova <?= ($type == 'income' ? "Receita" : "Despesa"); ?>:</p>
-    <form class="app_form" action="<?= url("/app/launch"); ?>" method="post">
+<div class="app_modal_box app_modal_{{$type}}">
+    <p class="title icon-calendar-check-o">Nova {{ ($type == 'income' ? "Receita" : "Despesa") }}:</p>
+    <form class="app_form" action="{{ url('/app/launch') }}" method="post">
+        @csrf
         <input type="hidden" name="currency" value="BRL"/>
-        <input type="hidden" name="type" value="<?= $type; ?>"/>
+        <input type="hidden" name="type" value="{{ $type }}"/>
 
         <label>
             <span class="field icon-leanpub">Descrição:</span>
@@ -25,18 +26,18 @@
             <label>
                 <span class="field icon-briefcase">Carteira:</span>
                 <select name="wallet">
-                    <?php foreach ($wallets as $wallet): ?>
-                        <option value="<?= $wallet->id; ?>">&ofcir; <?= $wallet->wallet ?></option>
-                    <?php endforeach; ?>
+                    @foreach($wallets as $wallet)
+                        <option value="{{ $wallet->id }}">&ofcir; {{ $wallet->wallet }}</option>
+                    @endforeach
                 </select>
             </label>
 
             <label>
                 <span class="field icon-filter">Categoria:</span>
                 <select name="category">
-                    <?php foreach ($categories as $category): ?>
-                        <option value="<?= $category->id; ?>">&ofcir; <?= $category->name; ?></option>
-                    <?php endforeach; ?>
+                    @foreach($categories as $category): ?>
+                        <option value="{{ $category->id }}">&ofcir; {{ $category->name }}</option>
+                    @endforeach
                 </select>
             </label>
         </div>
@@ -45,19 +46,19 @@
             <p class="field icon-exchange">Repetição:</p>
             <label class="check"
                    data-checkbox="true"
-                   data-slideup=".app_modal_<?= $type; ?> .repeate_item_fixed, .app_modal_<?= $type; ?> .repeate_item_enrollment">
+                   data-slideup=".app_modal_{{$type}} .repeate_item_fixed, .app_modal_{{$type}} .repeate_item_enrollment">
                 <input type="radio" name="repeat_when" value="single" checked> Única
             </label>
 
             <label data-checkbox="true"
-                   data-slideup=".app_modal_<?= $type; ?> .repeate_item_enrollment"
-                   data-slidedown=".app_modal_<?= $type; ?> .repeate_item_fixed">
+                   data-slideup=".app_modal_{{$type}} .repeate_item_enrollment"
+                   data-slidedown=".app_modal_{{$type}} .repeate_item_fixed">
                 <input type="radio" name="repeat_when" value="fixed"> Fixa
             </label>
 
             <label data-checkbox="true"
-                   data-slideup=".app_modal_<?= $type; ?> .repeate_item_fixed"
-                   data-slidedown=".app_modal_<?= $type; ?> .repeate_item_enrollment">
+                   data-slideup=".app_modal_{{$type}} .repeate_item_fixed"
+                   data-slidedown=".app_modal_{{$type}} .repeate_item_enrollment">
                 <input type="radio" name="repeat_when" value="enrollment"> Parcelada
             </label>
         </div>
@@ -74,6 +75,6 @@
         </label>
 
         <button class="btn radius transition icon-check-square-o">
-            Lançar <?= ($type == 'income' ? "Receita" : "Despesa"); ?></button>
+            Lançar {{ ($type == 'income' ? "Receita" : "Despesa") }}</button>
     </form>
 </div>

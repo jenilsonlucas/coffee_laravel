@@ -72,9 +72,9 @@ return [
     | the locations of the links and the values should be their targets.
     |
     */
-
+    
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('storage') => '/app/storage/app/public',
     ],
 
 ];

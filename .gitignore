@@ -23,3 +23,5 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 node_modules
+/docker/postgres_data/
+/docker/entrypoint.sh
