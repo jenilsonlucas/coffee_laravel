@@ -223,9 +223,12 @@ $(function () {
      */
     $("[data-invoiceremove]").click(function (e) {
         var remove = confirm("ATENÇÃO: Essa ação não pode ser desfeita! Tem certeza que deseja excluir esse lançamento?");
+        var dataset = $(this).data();
+        dataset._method = "DELETE";
+        dataset._token = csrf_token;
 
         if (remove === true) {
-            $.post($(this).data("invoiceremove"), function (response) {
+            $.post($(this).data("invoiceremove"), dataset, function (response) {
                 //redirect
                 if (response.redirect) {
                     window.location.href = response.redirect;

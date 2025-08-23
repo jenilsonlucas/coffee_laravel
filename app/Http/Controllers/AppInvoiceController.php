@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\App_Category;
+use App\Models\App_Wallet;
 use App\Models\AppInvoice;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+
+use function PHPSTORM_META\type;
 
 class AppInvoiceController extends Controller
 {
@@ -156,5 +160,96 @@ class AppInvoiceController extends Controller
         return Response()->json([
             "onpaid" => (new AppInvoice())->balance(Auth::user(), $y, $m, $invoice->type)
         ]); 
+    }
+
+
+    public function invoice(AppInvoice $invoice)
+    {
+        return View("cafeapp.invoice", [
+            "invoice" => $invoice,
+            "wallets" => App_Wallet::select("id", "wallet")
+                ->where("user_id", Auth::id())
+                ->orderBy("wallet")
+                ->get(),
+            "categories" => App_Category::where("type", $invoice->category->type)
+                    ->orderBy("order_by")
+                    ->get()
+        ]);
+    }
+
+
+    public function update(Request $request, AppInvoice $invoice)
+    {
+        $userName = Auth::user()->first_name;
+        if(empty($invoice))
+        {
+            return Response()->json([
+                "message" => $this->message->warning("Ooops! Não foi possivel carregar a fatura {$userName}.
+                 Você pode tentar novamente")->render()
+            ]);
+        }
+
+        if($request->input("due_day") < 1 || $request->input("due_day") > $dayOfMonth = date("t", strtotime($invoice->due_at))){
+            return Response()->json([
+                "message" => $this->message->warning("O vencimento deve ser entre dia 1 e dia {$dayOfMonth} para este mês.")->render()
+            ]);
+        }
+
+        $data = filter_var_array($request->all(), FILTER_SANITIZE_SPECIAL_CHARS);
+        $due_day = date("Y-m", strtotime($invoice->due_at)) . '-' . $data["due_day"];
+        $invoice->category_id = $data["category"];
+        $invoice->description = $data["description"];
+        $invoice->due_at = date("Y-m-d", strtotime($due_day));
+        $invoice->value = str_replace(['.', ','], ["", '.'], $data["value"]);
+        $invoice->wallet_id = $data["wallet"];
+        $invoice->status = $data["status"];
+        
+        try{
+            $invoice->save();
+        }catch(Exception $e){
+            return Response()->json([
+                "message" => $this->message->warning($e->getMessage())->render() 
+            ]);
+        }
+
+        $invoiceOf = AppInvoice::where("user_id", Auth::id())
+                ->where("invoice_of", $invoice->id)->get();
+        
+       if($invoiceOf->isNotEmpty() && in_array($invoice->type, ["fixed_income", "fixed_expense"]))
+        {
+            foreach($invoiceOf as $invoiceItem)
+            {
+                if($request->input("status") == "unpaid"  && $invoiceItem->status == "unpaid")
+                {
+                    $invoiceItem->destroy();
+                }else {
+                    $due_day = date("Y-m", strtotime($invoiceItem->due_at)) . "-" . $request->input("due_day");
+                    $invoiceItem->category = $request->input("category");
+                    $invoiceItem->description = $request->input("description");
+                    $invoiceItem->wallet_id = $request->input("wallet");
+
+                    if($invoiceItem->status = "unpaid"){
+                        $invoiceItem->value = str_replace([".", ','], ["", "."], $request->input("value"));
+                        $invoiceItem->due_at = date("Y-m-d",strtotime($due_day));
+                    }
+
+                    $invoiceItem->save();
+                }
+            }
+        } 
+        
+        return Response()->json([
+            "message" => $this->message->success("Pronto {$userName}, a actualização foi efetuada com sucesso")->render()
+        ]);
+    }
+
+
+    public function destroy(AppInvoice $invoice)
+    {
+        $invoice->delete();
+
+        return Response()->json([
+            "redirect" => url("/app")
+        ]);
     }
 }

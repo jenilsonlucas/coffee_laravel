@@ -47,12 +47,15 @@ Route::prefix('app')->group(function () {
     Route::get("/receber/{status?}/{category?}/{date?}", [AppInvoiceController::class, "income"]);
     Route::get("/pagar/{status?}/{category?}/{date?}", [AppInvoiceController::class, "expense"]);
     Route::get("/fixas", [AppInvoiceController::class, "fixas"]);
+    Route::get("/fatura/{invoice}", [AppInvoiceController::class, "invoice"]);
     Route::get("/perfil", [UserController::class, "edit"]);
     Route::get("/sair", [LoginControlller::class, "logout"]);
 
     Route::post('/launch', [AppInvoiceController::class, 'launch'])
     ->middleware('throttle:applaunch');
     Route::put("/onpaid", [AppInvoiceController::class, 'onpaid']);
+    Route::put("/invoice/{invoice}", [AppInvoiceController::class, "update"]);
+    Route::delete("/remove/{invoice}", [AppInvoiceController::class, "destroy"]);
     Route::post("/filter", [AppController::class, "filter"]);
     Route::put("/profile", [UserController::class, "profile"]);
 
