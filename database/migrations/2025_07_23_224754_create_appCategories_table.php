@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appwallets', function (Blueprint $table) {
+        Schema::create('appCategories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->unsigned()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('wallet', 255);
+            $table->integer("sub_of", false, true)->nullable();
+            $table->string("name", 255);
+            $table->string("type", 15);
+            $table->integer("order_by")->default(0);
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appwallets');
+        Schema::dropIfExists('appCategories');
     }
 };

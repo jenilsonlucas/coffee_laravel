@@ -24,6 +24,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_name',
         'email',
         'password',
+        'document',
+        'gender',
+        'datebirth',
         'photo'
     ];
 
@@ -48,13 +51,20 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     /**
-     * Get the wallet for the use
+     * Get the wallet for the user
     */
     public function wallets():HasMany
     {
         return $this->hasMany(App_Wallet::class)->chaperone();
     }
 
+    /**
+     * get the invoice for the user
+     */
+    public function invoices(): HasMany
+    {
+        return $this->hasMany(AppInvoice::class)->chaperone();
+    }
     /**
      * Get the attributes that should be cast.
      *
@@ -64,6 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'email_verified_at' => 'datetime',
+            'datebirth' => 'datetime',
             'password' => 'hashed',
         ];
     }
