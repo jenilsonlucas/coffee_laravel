@@ -1,6 +1,7 @@
 *.log
 .DS_Store
 .env
+.env.testing
 .env.backup
 .env.production
 .phpactor.json
@@ -25,3 +26,4 @@ Thumbs.db
 node_modules
 /docker/postgres_data/
 /docker/entrypoint.sh
+docker-compose.production.yml

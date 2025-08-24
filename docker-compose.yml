@@ -13,8 +13,6 @@ services:
       postgres:
         condition: service_healthy
         restart: true
-      redis:
-        condition: service_started
     networks:
       - laravel
     env_file: ".env"
@@ -48,16 +46,6 @@ services:
       - ./docker/postgres_data:/var/lib/postgresql/data
     networks:
       - laravel
-
-  redis:
-    image: redis:alpine
-    container_name: laravel_redis
-    command: redis-server --save "" --appendonly no
-    networks:
-      - laravel
-
-volumes:
-  pgdata:
 
 networks:
   laravel:
