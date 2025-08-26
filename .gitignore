@@ -25,5 +25,4 @@ Homestead.yaml
 Thumbs.db
 node_modules
 /docker/postgres_data/
-/docker/entrypoint.sh
 docker-compose.production.yml
