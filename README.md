@@ -34,3 +34,16 @@ Obs: Baixa consoante o teu sistema operativo, aqui eu vou deixar links para inst
 - Suba os containers **docker compose up --build**
 
 - Abra o navegador e coloque na url **http://localhost:8080**
+
+
+## PLANEJAMENTO DE CONTINUIDADE
+
+Para a continuidade do projecto, vai ser instalados algumas novas features com o CRUD de categorias das dispesas e receitas, o CRUD de carteiras, consumir um api de pagamentos para sistema poder se adaptar dependentemente do plano do usuario, e mais alguns outros recursos
+
+
+## COLABORADORES
+
+Espera - se que os colaboradores do projecto possam encontrar ajudar a encontrar errors, tanto de segurança como de desempenho entre outros, possam fazer a adição de novas features, tais com a que estão em cima referidas como outras que possais pensas
+
+
+## **Autor: Jenilson Domingos Da Costa Lucas**
