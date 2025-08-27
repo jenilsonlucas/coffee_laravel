@@ -7,9 +7,20 @@ until php -r "try { new PDO('pgsql:host=laravel_postgres;dbname=${DB_DATABASE}',
   sleep 3
 done
 
+#composer install
+composer install
+
+if ! grep -q "APP_KEY=" /app/.env || grep -q "APP_KEY=$" /app/.env; then
+    echo "Generating Laravel APP_KEY..."
+    php artisan key:generate --force
+fi
+
 # Run migrations + seed
 php artisan migrate --force
 php artisan db:seed --force
+
+chown -R www-data:www-data /app/storage /app/bootstrap/cache
+chmod -R 775 /app/storage /app/bootstrap/cache
 
 # Create storage symlink
 php artisan storage:link || true
