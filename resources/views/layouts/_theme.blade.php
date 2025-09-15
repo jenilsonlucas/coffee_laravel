@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="{{ asset('shared/styles/boot.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/message.css') }}"/>
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <title>{{ $title ?? "Coffee Code App"}}</title>
 </head>
 <body>
 
@@ -74,7 +75,7 @@
                 <h2>Sobre:</h2>
                 <p>O CafeControl é um gerenciador de contas simples, poderoso e gratuito. O prazer de tomar um café e
                     ter o controle total de suas contas.</p>
-                <a style="pointer-events: none; cursor:default;" title="Termos de uso" href="{{url('/termos')}}">Termos de uso</a>
+                <a title="Termos de uso" href="{{url('/termos')}}">Termos de uso</a>
             </article>
 
             <article class="main_footer_content_item">

@@ -38,10 +38,8 @@ Route::middleware('auth')->group(function() {
 
         return redirect('/app');
     })->middleware('signed')->name('verification.verify');
-});
 
-
-Route::prefix('app')->group(function () {
+    Route::prefix('app')->group(function () {
  
     Route::get("/", [AppController::class, "home"]);
     Route::get("/receber/{status?}/{category?}/{date?}", [AppInvoiceController::class, "income"]);
@@ -59,5 +57,9 @@ Route::prefix('app')->group(function () {
     Route::post("/filter", [AppController::class, "filter"]);
     Route::put("/profile", [UserController::class, "profile"]);
 
+    });
 });
+
+
+
 

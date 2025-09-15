@@ -1,5 +1,4 @@
-@extends('layouts._theme')
-<h1></h1>
+@extends('layouts._theme', ["title" => $title])
 
 @section('content')
 <div class="home_featured">
@@ -82,31 +81,37 @@
             <h4>Crie sua conta gratuitamente:</h4>
             <form action="{{url('/cadastrar')}}" method="post" enctype="multipart/form-data">
                 @csrf
-                @if(session('credentials'))
-                <div class="ajax_response">
-                    <div class="message {{session('message-type')}} icon-warning">{{session('credentials')}}</div>
+                 @if(session('credentials'))
+            <div class="ajax_response">
+                <div class="message {{ session('message-type') }} icon-warning">
+                    {{ session('credentials') }}
                 </div>
-                @endif
-                @error('first_name')
+            </div>
+            @elseif($errors->has('first_name'))
                 <div class="ajax_response">
-                    <div class="message error icon-warning">{{$message}}</div>
+                    <div class="message error icon-warning">
+                        {{ $errors->first('first_name') }}
+                    </div>
                 </div>
-                @enderror
-                @error('last_name')
+            @elseif($errors->has('last_name'))
                 <div class="ajax_response">
-                    <div class="message error icon-warning">{{$message}}</div>
+                    <div class="message error icon-warning">
+                        {{ $errors->first('last_name') }}
+                    </div>
                 </div>
-                @enderror
-                @error('email')
+            @elseif($errors->has('email'))
                 <div class="ajax_response">
-                    <div class="message error icon-warning">{{$message}}</div>
+                    <div class="message error icon-warning">
+                        {{ $errors->first('email') }}
+                    </div>
                 </div>
-                @enderror
-                @error('password')
+            @elseif($errors->has('password'))
                 <div class="ajax_response">
-                    <div class="message error icon-warning">{{$message}}</div>
+                    <div class="message error icon-warning">
+                        {{ $errors->first('password') }}
+                    </div>
                 </div>
-                @enderror
+            @endif
                 <input type="text" name="first_name" placeholder="Primeiro nome:" />
                 <input type="text" name="last_name" placeholder="Último nome:" />
                 <input type="email" name="email" placeholder="Melhor e-mail:" />

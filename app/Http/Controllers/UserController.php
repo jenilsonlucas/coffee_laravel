@@ -26,7 +26,8 @@ class UserController extends Controller
     {
         return view("cafeapp.profile", [
             "photo" => (!empty($this->user->photo) ? $this->user->photo : asset("/assets/images/avatar.jpg")),
-            "user" => $this->user
+            "user" => $this->user,
+            "title" => "Edite as suas informações"
         ]);
     }
 

@@ -35,10 +35,8 @@ RUN composer install --no-dev --optimize-autoloader
 
 
 # Copiar entrypoint e template
-COPY ./docker/entrypoint.sh /app/docker/entrypoint.sh
-COPY ./docker/nginx/templates/nginx.conf.template /app/docker/nginx.conf.template
+COPY ./docker/renderEntrypoint/entrypoint.sh /app/docker/renderEntrypoint/entrypoint.sh
+COPY ./docker/nginx/renderTemplate/nginx.conf.template /app/docker/nginx/renderTemplate/nginx.conf.template
 
-RUN chmod +x ./docker/entrypoint.sh
-
-
-ENTRYPOINT ["./docker/entrypoint.sh"]
+RUN chmod +x ./docker/renderEntrypoint/entrypoint.sh
+ENTRYPOINT ["./docker/renderEntrypoint/entrypoint.sh"]

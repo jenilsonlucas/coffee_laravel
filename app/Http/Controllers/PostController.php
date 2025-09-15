@@ -13,7 +13,8 @@ class PostController extends Controller
     public function index()
     {
         $blog = Post::orderby('post_at', 'desc')->paginate(6);
-        return view('page.blog', compact('blog'));
+        $title = "Blog - Inspiração, insights e descobertas";
+        return view('page.blog', compact('blog','title'));
     }
 
     /**
@@ -43,8 +44,8 @@ class PostController extends Controller
             ->limit(3)
             ->orderby('post_at', 'desc')
             ->get();
-
-        return view('blog.blog-post', compact('post', 'related'));
+        $title = $post->title;
+        return view('blog.blog-post', compact('post', 'related', 'title'));
     }
 
 }

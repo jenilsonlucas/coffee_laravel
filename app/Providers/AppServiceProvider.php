@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
@@ -32,5 +34,12 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
             request()->server->set('HTTPS', 'on');
         }
+
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url){
+            return (new MailMessage)
+            ->view("email.confirm", [
+                "confirm_link" => $url
+            ]);
+        });
     }
 }

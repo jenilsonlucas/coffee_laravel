@@ -86,6 +86,7 @@ class AppInvoiceController extends Controller
                     ->get();
         
         return view("cafeapp.invoices", [
+            "title" => "Controla as tuas receitas",
             "categories" => $categories,
             "user" => Auth::user(),
             "type" => "income",
@@ -113,6 +114,7 @@ class AppInvoiceController extends Controller
                     ->get();
         
         return view("cafeapp.invoices", [
+            "title" => "Controla as tuas receitas",
             "categories" => $categories,
             "user" => Auth::user(),
             "type" => "expense",
@@ -131,7 +133,8 @@ class AppInvoiceController extends Controller
         return view("cafeapp.recurrences", [
             "invoices" => AppInvoice::where("user_id", Auth::id())
                         ->whereRaw("type IN('fixed_income', 'fixed_expense')")
-                        ->get()
+                        ->get(),
+            "title" => "Controlas as contas fixas"
         ]);
     }
 
@@ -166,6 +169,7 @@ class AppInvoiceController extends Controller
     public function invoice(AppInvoice $invoice)
     {
         return View("cafeapp.invoice", [
+            "title" => "Fatura - " . $invoice->description,
             "invoice" => $invoice,
             "wallets" => App_Wallet::select("id", "wallet")
                 ->where("user_id", Auth::id())
