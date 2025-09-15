@@ -34,7 +34,6 @@ RUN composer install --no-dev --optimize-autoloader
 # RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 
 
-
 # Copiar entrypoint e template
 COPY ./docker/entrypoint.sh /app/docker/entrypoint.sh
 COPY ./docker/nginx/templates/nginx.conf.template /app/docker/nginx.conf.template
