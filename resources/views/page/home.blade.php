@@ -1,5 +1,4 @@
-@extends('layouts._theme')
-<h1></h1>
+@extends('layouts._theme', ["title" => $title])
 
 @section('content')
 <div class="home_featured">
@@ -80,8 +79,39 @@
         <div class="home_optin_content_flex">
             <span class="icon icon-check-square-o icon-notext"></span>
             <h4>Crie sua conta gratuitamente:</h4>
-            <form action="/" method="post" enctype="multipart/form-data">
+            <form action="{{url('/cadastrar')}}" method="post" enctype="multipart/form-data">
                 @csrf
+                 @if(session('credentials'))
+            <div class="ajax_response">
+                <div class="message {{ session('message-type') }} icon-warning">
+                    {{ session('credentials') }}
+                </div>
+            </div>
+            @elseif($errors->has('first_name'))
+                <div class="ajax_response">
+                    <div class="message error icon-warning">
+                        {{ $errors->first('first_name') }}
+                    </div>
+                </div>
+            @elseif($errors->has('last_name'))
+                <div class="ajax_response">
+                    <div class="message error icon-warning">
+                        {{ $errors->first('last_name') }}
+                    </div>
+                </div>
+            @elseif($errors->has('email'))
+                <div class="ajax_response">
+                    <div class="message error icon-warning">
+                        {{ $errors->first('email') }}
+                    </div>
+                </div>
+            @elseif($errors->has('password'))
+                <div class="ajax_response">
+                    <div class="message error icon-warning">
+                        {{ $errors->first('password') }}
+                    </div>
+                </div>
+            @endif
                 <input type="text" name="first_name" placeholder="Primeiro nome:" />
                 <input type="text" name="last_name" placeholder="Último nome:" />
                 <input type="email" name="email" placeholder="Melhor e-mail:" />

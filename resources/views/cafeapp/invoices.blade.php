@@ -1,4 +1,4 @@
-@extends("cafeapp.layouts._theme")
+@extends("cafeapp.layouts._theme", ["title" => $title])
 
 <h1></h1>
 

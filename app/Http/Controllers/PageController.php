@@ -15,7 +15,8 @@ class PageController extends Controller
     public function index()
     {
         $blog = Post::orderby('post_at', 'desc')->limit(6)->get();
-        return view('page.home', compact('blog'));        
+        $title = "Home - Bem-vindo ao nosso espaço online";
+        return view('page.home', compact('blog', 'title'));        
     }
 
     /**
@@ -23,7 +24,8 @@ class PageController extends Controller
      */
     public function about()
     {
-        return view('page.about');
+        $title = "Sobre - Conheça nossa missão e valores";
+        return view('page.about', compact('title'));
     }
 
 }

@@ -1,4 +1,4 @@
-@extends('layouts._theme')
+@extends('layouts._theme', ["title" => $title])
 <h1></h1>
 @section('content')
 <article class="auth">
@@ -12,19 +12,23 @@
             @csrf
             @if(session('credentials'))
             <div class="ajax_response">
-                <div class="message {{session('message-type')}} icon-warning">{{session('credentials')}}</div>
+                <div class="message {{ session('message-type') }} icon-warning">
+                    {{ session('credentials') }}
+                </div>
+            </div>
+            @elseif($errors->has('email'))
+            <div class="ajax_response">
+                <div class="message error icon-warning">
+                    {{ $errors->first('email') }}
+                </div>
+            </div>
+            @elseif($errors->has('password'))
+            <div class="ajax_response">
+                <div class="message error icon-warning">
+                    {{ $errors->first('password') }}
+                </div>
             </div>
             @endif
-            @error('email')
-            <div class="ajax_response">
-                <div class="message error icon-warning">{{$message}}</div>
-            </div>
-            @enderror
-            @error('password')
-            <div class="ajax_response">
-                <div class="message error icon-warning">{{$message}}</div>
-            </div>
-            @enderror
             <label>
                 <div><span class="icon-envelope">Email:</span></div>
                 <input type="email" name="email" value="{{old('email')}}" placeholder="Informe seu e-mail:"
@@ -34,7 +38,7 @@
             <label>
                 <div>
                     <span class="icon-unlock-alt">Senha:</span>
-                    <span><a title="Esqueceu a senha?" href="{{url('/recuperar')}}">Esqueceu a senha?</a></span>
+                    <span><a title="Esqueceu a senha?" style="pointer-events: none; cursor:default;" href="{{url('/recuperar')}}">Esqueceu a senha?</a></span>
                 </div>
                 <input type="password" name="password" placeholder="Informe sua senha:" required />
             </label>

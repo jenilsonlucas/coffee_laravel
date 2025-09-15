@@ -14,7 +14,8 @@ class LoginControlller extends Controller
     public function index()
     {
         if(Auth::check()) return redirect('/app');
-        return view('auth.auth-login');
+        $title = "Login - Acesse sua conta";
+        return view('auth.auth-login', compact('title'));
     }
 
     /**

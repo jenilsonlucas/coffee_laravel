@@ -26,3 +26,4 @@ Thumbs.db
 node_modules
 /docker/postgres_data/
 docker-compose.production.yml
+Dockerfile.render

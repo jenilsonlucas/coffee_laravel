@@ -1,4 +1,4 @@
-@extends("cafeapp.layouts._theme")
+@extends("cafeapp.layouts._theme", ["title" => $title])
 <span></span>
 @section("content")
 <div class="app_main_right" style="margin: 0;">

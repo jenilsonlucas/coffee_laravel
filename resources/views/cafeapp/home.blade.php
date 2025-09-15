@@ -1,5 +1,5 @@
-@extends("cafeapp.layouts._theme")
- <h1></h1>
+@extends("cafeapp.layouts._theme", ["title" => $title])
+
 @section("content")
 
 <div class="app_main_box">

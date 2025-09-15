@@ -1,4 +1,4 @@
-@extends('layouts._theme')
+@extends('layouts._theme', ["title" => $title])
 
 <h1></h1>
 

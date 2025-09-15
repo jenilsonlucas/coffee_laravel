@@ -9,6 +9,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use stdClass;
 
 class AppController extends Controller
@@ -122,7 +123,8 @@ class AppController extends Controller
         ->limit(4)
         ->get();   
 
-        return view("cafeapp.home", compact("chartData", "income", "expense", "wallet", "posts"));
+        $title = "Controle as suas receitas e despesas";
+        return view("cafeapp.home", compact("chartData", "income", "expense", "wallet", "posts", "title"));
     }
 
     public function filter(Request $request)

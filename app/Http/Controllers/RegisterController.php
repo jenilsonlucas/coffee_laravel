@@ -17,8 +17,8 @@ class RegisterController extends Controller
     public function index()
     {
         if(Auth::check()) return redirect('/app');
-        
-        return view('auth.auth-register');
+        $title = "Cadastro - Junte-se a nós";
+        return view('auth.auth-register', compact('title'));
     }
 
     /**

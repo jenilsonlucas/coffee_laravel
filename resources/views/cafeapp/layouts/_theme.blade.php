@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <link rel="stylesheet" href="{{ asset('shared/styles/styles.css') }}"/>
     <link rel="stylesheet" href="{{ asset('shared/styles/boot.css') }}"/>
     <link rel="stylesheet" href="{{ asset('/cafeapp/assets/css/style.css') }}"/>
     <link rel="stylesheet" href="{{ asset('/cafeapp/assets/css/message.css') }}"/>
     <meta name="csrf-token" content="{{csrf_token()}}">
-    <link rel="shortcut icon" href="{{ asset('cafeapp/assets/images/favicon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <title>{{ $title ?? "Coffee Code App"}}</title>
 </head>
 <body>
+
     <div class="ajax_load">
     <div class="ajax_load_box">
     <div class="ajax_load_box_circle"></div>
