@@ -80,8 +80,33 @@
         <div class="home_optin_content_flex">
             <span class="icon icon-check-square-o icon-notext"></span>
             <h4>Crie sua conta gratuitamente:</h4>
-            <form action="/" method="post" enctype="multipart/form-data" style="pointer-events: none;">
+            <form action="{{url('/cadastrar')}}" method="post" enctype="multipart/form-data">
                 @csrf
+                @if(session('credentials'))
+                <div class="ajax_response">
+                    <div class="message {{session('message-type')}} icon-warning">{{session('credentials')}}</div>
+                </div>
+                @endif
+                @error('first_name')
+                <div class="ajax_response">
+                    <div class="message error icon-warning">{{$message}}</div>
+                </div>
+                @enderror
+                @error('last_name')
+                <div class="ajax_response">
+                    <div class="message error icon-warning">{{$message}}</div>
+                </div>
+                @enderror
+                @error('email')
+                <div class="ajax_response">
+                    <div class="message error icon-warning">{{$message}}</div>
+                </div>
+                @enderror
+                @error('password')
+                <div class="ajax_response">
+                    <div class="message error icon-warning">{{$message}}</div>
+                </div>
+                @enderror
                 <input type="text" name="first_name" placeholder="Primeiro nome:" />
                 <input type="text" name="last_name" placeholder="Último nome:" />
                 <input type="email" name="email" placeholder="Melhor e-mail:" />
