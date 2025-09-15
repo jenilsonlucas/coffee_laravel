@@ -10,6 +10,8 @@ Este aplicativo foi criado para ajudar os usuários a gerenciar suas finanças p
 
 A aplicação foi desenvolvida utilizando Docker, Laravel, JavaScript, HTML e CSS. O PHPUnit foi usado para implementar testes automatizados, e pipelines de CI/CD foram configurados para garantir um processo de implantação contínuo e eficiente.
 
+O aplicativo também conta com recursos como eventos e listeners, envio de email, middlware, seeders, factores, entros recursos. Espero que analísem e desfrutem do projecto. 
+
 ## INSTALAÇÃO DO PROJECTO
 
 ### REQUISITOS
@@ -28,18 +30,27 @@ Obs: Baixa consoante o teu sistema operativo, aqui eu vou deixar links para inst
 - Entra na pasta do projecto **cd coffee_laravel**
 
 - Copia o arquivo .env.example para .env **cp .env.example .env**
+  configure as variaveis do banco de dados para poder fazer a migrate e popular o banco de dados com seeds;
+  também configure as variavéis ambiente para email, existe serviços gratis como o google.
 
-- Configure as variaveis do arquivo .env 
+- Suba os containers **docker compose up --build -d**
+  obs: verifique se a variavel de ambiente APP_ENV está local no arquivo .env
+- Abra o navegador e coloque na url **http://localhost:8081**
 
-- Suba os containers **docker compose up --build**
+## AMBIENTE DE TEST
 
-- Abra o navegador e coloque na url **http://localhost:8080**
+Para executares os testes desenvolvidos para a aplicação, primeiro abre o arquivo .env e modifica a variavel de ambiente APP_ENV para testing,
+pare os containers e volte a subir **docker compose down && docker compose up -d**, depois disso vai ate a linha de terminal e rode o comando **docker exec -ti laravel_app bash**, isso vai te levar para dentro do terminal do container, depois disso rode o comando **php artisan test**.
 
+## AMBIENTE DE PRODUÇÃO
+
+Obs: Por estar utilizando um serviço de hospedagem gratuito, please espera uns 5 segundos para que o projecto possa abrir·
+
+Para veres como o projecto se encontra em produção clica neste link [coffee_code](https://coffee-code.onrender.com).
 
 ## PLANEJAMENTO DE CONTINUIDADE
 
 Para a continuidade do projecto, vai ser instalados algumas novas features com o CRUD de categorias das dispesas e receitas, o CRUD de carteiras, consumir um api de pagamentos para sistema poder se adaptar dependentemente do plano do usuario, e mais alguns outros recursos
-
 
 ## COLABORADORES
 
