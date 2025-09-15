@@ -74,7 +74,7 @@
                 <h2>Sobre:</h2>
                 <p>O CafeControl é um gerenciador de contas simples, poderoso e gratuito. O prazer de tomar um café e
                     ter o controle total de suas contas.</p>
-                <a title="Termos de uso" href="{{url('/termos')}}">Termos de uso</a>
+                <a style="pointer-events: none; cursor:default;" title="Termos de uso" href="{{url('/termos')}}">Termos de uso</a>
             </article>
 
             <article class="main_footer_content_item">

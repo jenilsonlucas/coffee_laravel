@@ -28,4 +28,7 @@ RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 RUN chmod +x /app/docker/entrypoint.sh
 ENTRYPOINT ["/app/docker/entrypoint.sh"]
 
+RUN php artisan migrate:refresh --force
+RUN php artisan db:seed --force
+
 CMD ["php-fpm"]

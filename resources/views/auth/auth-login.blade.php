@@ -34,7 +34,7 @@
             <label>
                 <div>
                     <span class="icon-unlock-alt">Senha:</span>
-                    <span><a title="Esqueceu a senha?" href="{{url('/recuperar')}}">Esqueceu a senha?</a></span>
+                    <span><a title="Esqueceu a senha?" style="pointer-events: none; cursor:default;" href="{{url('/recuperar')}}">Esqueceu a senha?</a></span>
                 </div>
                 <input type="password" name="password" placeholder="Informe sua senha:" required />
             </label>

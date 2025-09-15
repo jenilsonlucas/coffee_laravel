@@ -80,7 +80,7 @@
         <div class="home_optin_content_flex">
             <span class="icon icon-check-square-o icon-notext"></span>
             <h4>Crie sua conta gratuitamente:</h4>
-            <form action="/" method="post" enctype="multipart/form-data">
+            <form action="/" method="post" enctype="multipart/form-data" style="pointer-events: none;">
                 @csrf
                 <input type="text" name="first_name" placeholder="Primeiro nome:" />
                 <input type="text" name="last_name" placeholder="Último nome:" />

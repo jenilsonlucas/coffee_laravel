@@ -1,12 +1,5 @@
-worker_processes auto;
-
-events {
-    worker_connections 1024;
-}
-
-http{
-    server {
-        listen 80;
+ server {
+        listen ${PORT};
         server_name localhost;
         root /app/public;
 
@@ -35,6 +28,3 @@ http{
             deny all;
         }
     }
-
-}
-

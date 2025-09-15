@@ -1,12 +1,5 @@
-worker_processes auto;
-
-events {
-    worker_connections 1024;
-}
-
-http{
-    server {
-        listen 80;
+ server {
+        listen ${PORT};
         server_name localhost;
         root /app/public;
 
@@ -25,7 +18,7 @@ http{
         error_page 404  /index.php;
 
         location ~ \.php$ {
-            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_pass laravel_app:9000;
             fastcgi_index index.php;
             fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
             include fastcgi_params;
@@ -35,6 +28,3 @@ http{
             deny all;
         }
     }
-
-}
-
