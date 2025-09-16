@@ -12,6 +12,24 @@ A aplicação foi desenvolvida utilizando Docker, Laravel, JavaScript, HTML e CS
 
 O aplicativo também conta com recursos como eventos e listeners, envio de email, middlware, seeders, factores, entros recursos. Espero que analísem e desfrutem do projecto. 
 
+<h4>Directórios para veres</h4>
+
+- app/Http/Controllers/
+- app/Listeners/
+- app/Models/
+- app/Providers/
+- app/Support/
+- database/factories/
+- database/migrations/
+- database/seeders/
+- docker/
+- public/
+- resources/
+- routes/
+- tests/Feature
+
+Análise cada arquivo destes directórios para poderes entender melhor como funciona o projecto e como ele foi construido
+
 ## INSTALAÇÃO DO PROJECTO
 
 ### REQUISITOS
